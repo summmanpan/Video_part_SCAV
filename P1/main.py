@@ -44,8 +44,73 @@ if __name__ == '__main__':
     print("RGB obtained from the own tranform function is: ",R,G,B);
     """
 
-    bytes = [2,2,2,2,0,0,0,3];
-    run_length_encoding_numb(bytes)
+
+    def encode_message(message):
+        encoded_string = ""
+        i = 0
+        print("hello")
+        while (i <= len(message) - 1):
+            count = 1
+            ch = message[i]
+            j = i
+            while (j < len(message) - 1):
+                '''if the character at the current index is the same as the character at the next index. If the characters are the same, the count is incremented to 1'''
+                if (message[j] == message[j + 1]):
+                    count = count + 1
+                    j = j + 1
+                else:
+                    break
+            '''the count and the character is concatenated to the encoded string'''
+            encoded_string = encoded_string + str(count) + ch
+            i = j + 1
+
+        return encoded_string
+
+    ### ahora solo para los zeros:
+    def run_length_encode_message(message):
+        final_list = []
+        i = 0
+        bool_zero = False
+        encoded_int = 0
+        while (i <= len(message) - 1):
+            count = 1
+            ch = message[i]
+            j = i
+            if ch == 0:
+                bool_zero = True
+                while (j < len(message) - 1):
+                    '''if the character at the current index is the same as the character at the next index. If the characters are the same, the count is incremented to 1'''
+                    if (message[j] == message[j + 1]):
+                        count = count + 1
+                        j = j + 1
+                    else:
+                        break
+            else:
+                bool_zero = False
+                count = 0
+            '''the count and the character is concatenated to the encoded string'''
+            if (bool_zero):
+                final_list.append(0)
+
+            encoded_int = count + ch
+            final_list.append(encoded_int)
+            i = j + 1
+
+        return final_list
+
+
+    message = ["2","0","0","0","5","6"]
+    message2 = [2,0,0,4,0,0,7,0,0,0,0,5,3,2,1]
+    print(len(message2))
+
+    a = encode_message(message)
+    b = run_length_encode_message(message2)
+    print(len(b))
+
+    print(b);
+
+
+    #run_length_encoding_numb(bytes)
 
 
 
