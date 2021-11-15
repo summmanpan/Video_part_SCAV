@@ -1,7 +1,7 @@
 def run_length_encode_message(message):
     """
-    :param message:
-    :return:
+    :param message: series of bytes as integers within a list
+    :return: a list with the message encoded using run length
     """
     final_list = []
     i = 0
