@@ -29,21 +29,31 @@ def RGBfromYUV( Y ,U , V):
 
 if __name__ == '__main__':
 
-    # creating an empty list
-    try:
-        list = []
-        listRGBString = ["R","G","B"]
-        print("Give me three values (numbers) of R,G,B between [0,255] ")
-        for i in range(0, 3):
-            print("Values of",listRGBString[i])
-            ele = int(input())
-            list.append(ele)  # adding the element
-        print(list)
-
-        Y,U,V = YUVfromRGB(list[0], list[1], list[2])
-        print("The value transform to YUV is: ", Y,U,V)
-        R,G,B = RGBfromYUV(Y, U, V)
-        print("Also we can check the function of YUVtoRGB give us the same values as the input values")
-        print("RGB obtained from the own tranform function is: ",R,G,B);
-    except:
-        print("There is a error")
+    flag = True
+    while(flag):
+        try:
+            list = []
+            user_input = ""
+            listRGBString = ["R","G","B"]
+            print("Give me three values (numbers) of R,G,B between [0,255] ")
+            for i in range(0, 3):
+                print("Values of",listRGBString[i])
+                user_input = input()
+                if user_input == "e":
+                    flag = False
+                    break
+                ele = int(user_input)
+                if 0 <= ele <= 255:
+                    pass
+                else:
+                    raise Exception()
+                list.append(ele)  # adding the element
+            if (user_input != "e"):
+                print(list)
+                Y,U,V = YUVfromRGB(list[0], list[1], list[2])
+                print("The value transform to YUV is: ", Y,U,V)
+                R,G,B = RGBfromYUV(Y, U, V)
+                print("Also we can check the function of YUVtoRGB give us the same values as the input values")
+                print("RGB obtained from the own tranform function is: ",R,G,B);
+        except:
+            print("There is a error or the number sould be btw the range")

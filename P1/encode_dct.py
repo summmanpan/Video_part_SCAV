@@ -9,7 +9,7 @@ from scipy import fftpack
 # are complex numbers.
 
 
-#----------Custom display routines functions-----------------
+#----------Custom display routines utils functions-----------------
 def display(im):  # Define a new Python routine
     """
     Displays an image using the methods of the 'matplotlib' library.
@@ -43,19 +43,28 @@ def idct2(f):
     return np.transpose(fftpack.idct(
            np.transpose(fftpack.idct(f, norm = "ortho")), norm = "ortho"))
 
-#----------small Discrete Cosine Trandforms-----------------
-def local_dct(I, w = 8) :  # w = patch size
+#----------small Discrete Cosine Transforms-----------------
+def local_dct(I, w = 8) :
+    """
+    :param I: a 2D list image to encode with DCT
+    :param w: int , patch size
+    :return: the image transformed
+    """
     lI = np.zeros(I.shape)
-    # Loop over the small (w,w) patches ------------------------------
+    # Loop over the small (w,w) patches
     for i in range(1,I.shape[0]//w+1):
         for j in range(1,I.shape[1]//w+1):
             lI[(i-1)*w: i*w, (j-1)*w: j*w] = dct2(I[(i-1)*w: i*w, (j-1)*w: j*w])
     return lI
 
-
-def ilocal_dct(lI, w = 8) :  # w = patch size
+def ilocal_dct(lI, w = 8) :
+    """
+        :param I: a 2D list image to encode with DCT
+        :param w: int , patch size
+        :return: the image transformed
+    """
     I = np.zeros(lI.shape)
-    # Loop over the small (w,w) patches ------------------------------
+    # Loop over the small (w,w) patches
     for i in range(1,I.shape[0]//w+1):
         for j in range(1,I.shape[1]//w+1):
             I[(i-1)*w: i*w, (j-1)*w: j*w] = idct2(lI[(i-1)*w: i*w, (j-1)*w: j*w])
@@ -96,7 +105,7 @@ if __name__ == '__main__':
     lDCT_threshold(lI, .5);
 
     Abs_values = np.sort(abs(lI.ravel()))  # Sort the coefficients' magnitudes
-    print(Abs_values)  # in ascending order...
+    #print(Abs_values)  # in ascending order...
 
     cutoff = Abs_values[-2000]  # And select the 2000th largest value
     JPEG = lDCT_threshold(lI, cutoff)  # as a cutoff

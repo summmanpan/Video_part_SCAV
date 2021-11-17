@@ -1,9 +1,32 @@
 
+# Encode the message
+def run_length_encode_message2(message):
+    """
+    :param message: series of bytes as integers within a list
+    :return: a list with the encoded message using run length algorithm
+    """
+    count = 1;
+    final_list = [];
+    #[1,1,1,0,0,0,1]
+    for i in range(len(message)-1):
+        ele = message[i]
+        #check if the element in the list is 0 and is the same with the next
+        if(ele == 0 and ele == message[i + 1] ):
+            count += 1;
+        else:
+            final_list.append(ele)
+            #we add the count to the list
+            if(count != 1):
+                final_list.append(count)
+            count = 1;
+
+    return final_list
+
 # Encode the message for strings
 def encode_message(message):
     encoded_string = ""
     i = 0
-    print("hello")
+
     while (i <= len(message) - 1):
         count = 1
         ch = message[i]
@@ -61,7 +84,7 @@ if __name__ == '__main__':
     original_data_stream = [2, 0, 0, 4, 0, 0, 7, 0, 0, 0, 0, 5,
                             0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 2, 1]
     print("The original data stream is :\n",original_data_stream)
-    encoded_mes = run_length_encode_message(original_data_stream)
+    encoded_mes = run_length_encode_message2(original_data_stream)
     print("After, run length encoding the message is :\n", encoded_mes)
     print("\t")
     print("Now ,try to introduce your own data stream ")
