@@ -28,8 +28,8 @@ if __name__ == '__main__':
     
     Please, choose the option you like:
     
-    1) Cut the video between a range of times
-    2) Add YUV histogram to the video
+    1) Cut the video 
+    2) Add YUV histogram 
     3) Resize the video 
     4) Audio management
     0) Exit
