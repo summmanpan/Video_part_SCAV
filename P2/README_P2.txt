@@ -13,7 +13,7 @@ For exercise 3 we have 4 different options of resizing for the video.
 And for the last exercise, there are also 4 options of audio coded types,
 that is ACC, AC3, MP3, MP4.
 
-Also, you can check that the program is made to avoid user enter errors.
+Also, you can check that the program is made to avoid user entry errors.
 And we also add colors of print to differentiate between the texts.
 
 Make sure to change the path of the input video and output video.
