@@ -2,15 +2,6 @@ import os
 #import subproces
 #subprocess.call()
 
-def switch(argument):
-    dic = {
-        1: "",
-        2: "",
-        3: "",
-        4: ""
-    }
-    print(dic.get(argument))
-
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -36,8 +27,8 @@ if __name__ == '__main__':
     
     """
     print(bcolors.OKCYAN+bcolors.BOLD + "   Hi ^^ let's get start the tour of FFMPEG" + bcolors.ENDC)
-    input_video = "videos/BigBuckBunny_512kb.mp4"
-    output_video = "videos/cut.mp4"
+    input_video = "BigBuckBunny_512kb.mp4"
+    output_video = "cut.mp4"
     while True:
         try:
             print(bcolors.OKCYAN+bcolors.BOLD + main_menu + bcolors.ENDC)
@@ -133,13 +124,13 @@ if __name__ == '__main__':
                         if codec_op< 0 or codec_op > 4:
                             raise"Error of user input option"
                         if codec_op == 1:
-                            os.system("ffmpeg -i "+input_video+" -c copy -c:a aac converted_audio_acc.aac")
+                            os.system("ffmpeg -i "+"mono.mp4"+" -c copy -c:a aac converted_audio_acc.aac")
                         elif codec_op == 2:
-                            os.system("ffmpeg -i "+input_video+" -c copy -c:a ac3 converted_audio_ac3.ac3")
+                            os.system("ffmpeg -i "+"mono.mp4"+" -c copy -c:a ac3 converted_audio_ac3.ac3")
                         elif codec_op == 3:
-                            os.system("ffmpeg -i "+input_video+" -vcodec copy -acodec mp2 converted_audio_mp2.mp2")
+                            os.system("ffmpeg -i "+"mono.mp4"+" -vcodec copy -acodec mp2 converted_audio_mp2.mp2")
                         elif codec_op ==4:
-                            os.system("ffmpeg -i "+input_video+" -vcodec copy -acodec mp3 converted_audio_mp3.mp3")
+                            os.system("ffmpeg -i "+"mono.mp4"+" -vcodec copy -acodec mp3 converted_audio_mp3.mp3")
                         elif codec_op == 0:
                             break
                     except:
