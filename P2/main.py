@@ -105,7 +105,7 @@ if __name__ == '__main__':
             if option == 4:
                 """change the audio into mono output and in a different audio codec """
                 #mono output
-                os.system("ffmpeg -i "+input_video+" -ac 1 mono.mp4")
+                #os.system("ffmpeg -i "+input_video+" -ac 1 mono.mp4")
                 #Change the audio codec
                 while True:
                     try:
@@ -124,13 +124,13 @@ if __name__ == '__main__':
                         if codec_op< 0 or codec_op > 4:
                             raise"Error of user input option"
                         if codec_op == 1:
-                            os.system("ffmpeg -i "+"mono.mp4"+" -c copy -c:a aac converted_audio_acc.aac")
+                            os.system("ffmpeg -i "+input_video+" -ac 1 -c copy -c:a aac converted_audio_acc.aac")
                         elif codec_op == 2:
-                            os.system("ffmpeg -i "+"mono.mp4"+" -c copy -c:a ac3 converted_audio_ac3.ac3")
+                            os.system("ffmpeg -i "+input_video+" -ac 1 -c copy -c:a ac3 converted_audio_ac3.ac3")
                         elif codec_op == 3:
-                            os.system("ffmpeg -i "+"mono.mp4"+" -vcodec copy -acodec mp2 converted_audio_mp2.mp2")
+                            os.system("ffmpeg -i "+input_video+" -ac 1 -vcodec copy -acodec mp2 converted_audio_mp2.mp2")
                         elif codec_op ==4:
-                            os.system("ffmpeg -i "+"mono.mp4"+" -vcodec copy -acodec mp3 converted_audio_mp3.mp3")
+                            os.system("ffmpeg -i "+input_video+" -ac 1 -vcodec copy -acodec mp3 converted_audio_mp3.mp3")
                         elif codec_op == 0:
                             break
                     except:
