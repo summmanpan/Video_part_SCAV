@@ -129,9 +129,9 @@ if __name__ == '__main__':
                         elif codec_op == 2:
                             os.system("ffmpeg -i "+input_video+" -ac 1 -c copy -c:a ac3 converted_audio_ac3.ac3")
                         elif codec_op == 3:
-                            os.system("ffmpeg -i "+input_video+" -ac 1 -c copy copy -acodec mp2 converted_audio_mp2.mp2")
+                            os.system("ffmpeg -i "+input_video+" -ac 1 -acodec copy -acodec mp2 converted_audio_mp2.mp2")
                         elif codec_op ==4:
-                            os.system("ffmpeg -i "+input_video+" -ac 1 -c copy copy -acodec mp3 converted_audio_mp3.mp3")
+                            os.system("ffmpeg -i "+input_video+" -ac 1 -acodec copy -acodec mp3 converted_audio_mp3.mp3")
                         elif codec_op == 0:
                             break
                     except:
