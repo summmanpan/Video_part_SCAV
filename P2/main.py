@@ -1,3 +1,4 @@
+
 import os
 #import subproces
 #subprocess.call()
@@ -72,7 +73,7 @@ if __name__ == '__main__':
                 while flag_continue :
                     try:
                         print(bcolors.MENU+bcolors.BOLD+""""
-                        Menu for resize options:
+                        Menu - resize options:
                             
                             1. 720p
                             2. 480p
@@ -110,7 +111,7 @@ if __name__ == '__main__':
                 while True:
                     try:
                         print(bcolors.MENU+bcolors.BOLD+""""
-                            Menu for audio codec options:
+                            Menu - audio codec options:
                                 
                                 1. AAC
                                 2. AC-3
@@ -128,9 +129,9 @@ if __name__ == '__main__':
                         elif codec_op == 2:
                             os.system("ffmpeg -i "+input_video+" -ac 1 -c copy -c:a ac3 converted_audio_ac3.ac3")
                         elif codec_op == 3:
-                            os.system("ffmpeg -i "+input_video+" -ac 1 -vcodec copy -acodec mp2 converted_audio_mp2.mp2")
+                            os.system("ffmpeg -i "+input_video+" -ac 1 -c copy copy -acodec mp2 converted_audio_mp2.mp2")
                         elif codec_op ==4:
-                            os.system("ffmpeg -i "+input_video+" -ac 1 -vcodec copy -acodec mp3 converted_audio_mp3.mp3")
+                            os.system("ffmpeg -i "+input_video+" -ac 1 -c copy copy -acodec mp3 converted_audio_mp3.mp3")
                         elif codec_op == 0:
                             break
                     except:
