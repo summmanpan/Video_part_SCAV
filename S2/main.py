@@ -1,8 +1,10 @@
+
+#import libraries
 import os
 import subprocess
 
-# subprocess.call()
 
+#class to set colors the strings in the terminal
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -53,32 +55,40 @@ if __name__ == '__main__':
                 # borrar los outputs de las dos primeras? esta mal hecho, ahay que volver mirar el mp3...
 
             if option == 3:
-                # 1)First we will use ffprobe to count video and audio streams / tracks:
-                # Numbers of video:
-                # Run 'ls', sending output to a PIPE (shell equiv.: ls -l | ... )
+
+                # 1)First we will use ffprobe to count the numbers of video and
+                # audio streams / tracks:
+
+                # Numbers of video tracks:
+                # We sending output to a PIPE (shell equiv.: ls -l | ... )
                 pos_v_tracks = subprocess.Popen(("ffprobe -v error -select_streams v -show_entries stream=index -of csv=p=0 " + container_name).split(),stdout=subprocess.PIPE)
-                # Read output from 'ls' as input to 'num_v_tracks' (shell equiv.: ... | wc -l)
+                # Read output from 'pos_v_tracks' as input to 'num_v_tracks' (shell equiv.: ... | wc -l)
                 num_v_tracks = subprocess.Popen('wc -l'.split(), stdin=pos_v_tracks.stdout, stdout=subprocess.PIPE)
-                out_video, err_video = num_v_tracks.communicate() # Trap stdout and stderr from 'num_v_tracks'
+                out_video, _  = num_v_tracks.communicate() # assign one to _,
+                # which means ignore by convention
 
                 #communicate() method used here will return a byte object instead of a string.
-                #then we will need to convert the output to a string using decode()
-                if err_video:
-                    num_v_tracks = err_video.strip().decode(); print(num_v_tracks)
-                if out_video:
-                    num_v_tracks = out_video.strip().decode()
-                    print("The numbers of video tracks :", num_v_tracks)
+                #So, we will need to convert the output to a string using
+                # decode()
 
-                # Numbers of audio:
+                num_v_tracks = out_video.strip().decode()#num of video tracks
+                print("The numbers of video tracks :", num_v_tracks)
+
+                # Numbers of audio tracks:
                 pos_a_tracks = subprocess.Popen(("ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 " + container_name).split(),stdout=subprocess.PIPE)
                 # Read output from 'ls' as input to 'num_v_tracks' (shell equiv.: ... | wc -l)
                 num_a_tracks = subprocess.Popen('wc -l'.split(), stdin=pos_a_tracks.stdout, stdout=subprocess.PIPE)
                 out_audio, err_audio = num_a_tracks.communicate()
-                num_a_tracks = out_audio.strip().decode() # convert to int
+                num_a_tracks = out_audio.strip().decode()
                 print("The numbers of audio tracks :", num_a_tracks)
 
-                #Find the codec name selecting the specific track
+                
+                # 2) Find the codec name of each tracks we found before
                 list_vcodec = [];list_acodec = [];
+                
+                
+                #num_v_tracks = len(list_vcodec);
+                #num_a_tracks = len(list_acodec);
                 for i in range(int(num_v_tracks)):
                     vcodec = subprocess.Popen(("ffprobe -v error -select_streams v:"+str(i)+" -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 "+container_name).split(),stdout=subprocess.PIPE)
                     vcodec = vcodec.communicate()[0].decode("utf-8").replace("\n","")
@@ -90,17 +100,13 @@ if __name__ == '__main__':
                     list_acodec.append(acodec)
                     print("The audio codec name for",i,"track is",acodec)
 
-                # Check the broadcasting standard
+                # 3) Check the broadcasting standard that would fit
                 #print("List",list_acodec,list_vcodec)
                 #list_codec = set(list_vcodec + list_acodec)
 
-                """DVD_v = set(["mpeg2video","h264"]);DVD_a = set(["aac","ac3","mp3"]);
-                ISDB_v = set(["mpeg2video","h264"]);ISDB_a = set(["aac"]);
-                ATSC_v = set(["mpeg2video","h264"]);ATSC_a = set(["ac3"]);
-                DTMB_v = set(["avs","avs+","mpeg2video","h264"]);DTMB_a = set(["dra","aac","ac3","mp2","mp3"]);
-
-                bool_v_DVD = set(list_vcodec).issubset(DVD_v)
-                bool_a_DVD = set(list_acodec).issubset(DVD_a)"""
+                # Test:
+                #list_vcodec = ["h264"]
+                #list_acodec = ["aac", "mp3"];
 
                 DVD_v = ["mpeg2video","h264"]; DVD_a = ["aac","ac3","mp3"];
                 ISDB_v = ["mpeg2video","h264"]; ISDB_a = ["aac"];
@@ -109,27 +115,48 @@ if __name__ == '__main__':
 
                 BC_v_standard = [DVD_v]+[ISDB_v]+[ATSC_v]+[DTMB_v]
                 BC_a_standard = [DVD_a]+[ISDB_a]+[ATSC_a]+[DTMB_a]
-                BC_type = []
+                BC_type_v = []
                 for i in range(len(BC_v_standard)):
-                    #for j in range(len(BC_v_standard[i])):
-                        #If any element in the received vcodec list is in the BC standard type, we get True boolean
-                    bool_v_flag = any(item in list_vcodec for item in BC_v_standard[i])
+                    #If any element in the received vcodec list is in the BC
+                    # standard types, we get True boolean
+                    bool_v_flag = any(
+                        item in list_vcodec for item in BC_v_standard[i])
                     if bool_v_flag:
-                        BC_type.append(i) #add the position of the type of BC Standards
+                        BC_type_v.append(i) #add the position of the type of
+                        # BC Standards
+
+                BC_type_a = []
+                # same idea but with the audio now
+                for i in range(len(BC_a_standard)):
+                    aa = BC_a_standard[i]
+                    bool_a_flag = any(
+                        item in list_acodec for item in BC_a_standard[i])
+                    if bool_a_flag:
+                        BC_type_a.append(
+                            i)  # add the position of the type of BC Standards
+
+                #Find the common elements in both the lists
+                if (set(BC_type_v) and set(BC_type_a)):
+                    BC_type = set(BC_type_v) and set(BC_type_a)
+                    BC_type_list = list(BC_type); #convert it to a list
 
                 BC_Standard_Names = ["DVD","ISDB","ATSC","DTMB"]
-                # Faltaria acceder con las posiciones que he encontrado de BC_type, pintear con los tipos correspondientes
-                # preguntar esto!
-
-                #bool_DVD = list_codec.issubset(ISDB)
-                #bool_DVD = list_codec.issubset(ATSC)
-                #bool_DVD = list_codec.issubset(DTMB)
-                #preguntar si un container solo puede ser de un solo tipo o no...
+                #Print the corresponds Broadcast, if the list before is 0,
+                # means that it does not fit for any
+                if(len(BC_type_list)>0):
+                    for i in BC_type_list:
+                        print("It fits for following broadcasting standard:",
+                              BC_Standard_Names[i])
+                else:
+                    print("Error it does not fit for any broadcasting standard")
 
             if option == 4:
                 os.system("ffmpeg -i "+container_name+" -i subtitle.srt -c:v copy -c:a copy -c:s mov_text -map 0 -map 1 video_subtitle.mp4")
                 os.system("ffmpeg -i "+input_video+" -vf subtitles=subtitle.srt video_with_subtitle.mp4")
                 os.system("curl -O https://drive.google.com/file/d/12C5ZDuH4BoKfWTJbn1kd5EtUgnbGlBoQ/view?usp=sharing/subtitle_download.srt")
+                #Ask if is normal that the the download version has larger size!
+
+            # integrate everthing inside a class!!->Ej5
 
             if option == 0:
                 print(
