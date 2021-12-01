@@ -119,16 +119,23 @@ if __name__ == '__main__':
 
                 BC_Standard_Names = ["DVD","ISDB","ATSC","DTMB"]
                 # Faltaria acceder con las posiciones que he encontrado de BC_type, pintear con los tipos correspondientes
-
+                # preguntar esto!
 
                 #bool_DVD = list_codec.issubset(ISDB)
                 #bool_DVD = list_codec.issubset(ATSC)
                 #bool_DVD = list_codec.issubset(DTMB)
+                #preguntar si un container solo puede ser de un solo tipo o no...
+
+            if option == 4:
+                os.system("ffmpeg -i "+container_name+" -i subtitle.srt -c:v copy -c:a copy -c:s mov_text -map 0 -map 1 video_subtitle.mp4")
+                os.system("ffmpeg -i "+input_video+" -vf subtitles=subtitle.srt video_with_subtitle.mp4")
+                os.system("curl -O https://drive.google.com/file/d/12C5ZDuH4BoKfWTJbn1kd5EtUgnbGlBoQ/view?usp=sharing/subtitle_download.srt")
 
             if option == 0:
                 print(
                     bcolors.HEADER + "It's been a pleasure, see you next time" + bcolors.ENDC)
                 break
+
         except:
             print(
                 bcolors.UNDERLINE + bcolors.FAIL + "Occur a error, please try again" + bcolors.ENDC)
