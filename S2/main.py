@@ -252,13 +252,13 @@ if __name__ == '__main__':
 
             if option == 4:
                 ffmpeg_s2.ex4()
-                #the download version has larger size
             if option == 0:
                 print(
                     bcolors.HEADER + "It's been a pleasure, see you next time" + bcolors.ENDC)
                 break
-            if option > 4 and option < 0:
+            if option > 4 or option < 0:
                 raise "Error of user input"
         except:
             print(
-                bcolors.UNDERLINE + bcolors.FAIL + "Occur a error, please try again" + bcolors.ENDC)
+                bcolors.UNDERLINE + bcolors.FAIL + "There is a error, please "
+                                                   "try again" + bcolors.ENDC)
