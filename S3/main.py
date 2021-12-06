@@ -52,9 +52,9 @@ if __name__ == '__main__':
     Please, choose the option you like:
 
     1) Convert videos into VP8, VP9, h265 & AV1
-    2) Export 2 video comparison
-    3) Create a live streaming of the BBB video
-    4) Choose the IP to broadcast the previous video
+    2) Export 2 different codec video comparison
+    3) Create a live streaming 
+    4) Choose the IP to broadcast the streaming
     0) Exit
 
     """
@@ -63,7 +63,7 @@ if __name__ == '__main__':
     input_v = input("Enter your video name, if not, enter d for "
                     "default :")
     if input_v == "d":
-        input_v = "videos/BigBuckBunny_512kb.mp4"
+        input_v = "BigBuckBunny_60FPS.mp4"
     CodecVideo = codecVideo_class()
     while True:
         try:
@@ -77,14 +77,17 @@ if __name__ == '__main__':
                 #To archive this task we will follow this link:
                 """https://stackoverflow.com/questions/11552565/vertically-or-horizontally-stack-mosaic-several-videos-using-ffmpeg"""
                 while True:
-                    user_stack_type = int(input(bcolors.MENU + bcolors.BOLD +
-                        """
-                    Enter the option you want :
+                    menu_op = """
+                    Menu:
                     1) Vertical stack
                     2) Horizontal stack
                     3) Visual comparison With the blend filter
                     0) Exit
-                    """+ bcolors.ENDC)) #3) 2x2 Stack with all codecs types
+                    """
+                    print(bcolors.MENU + bcolors.BOLD +
+                        menu_op+ bcolors.ENDC)
+                    user_stack_type = int(input("Enter the option you want: "))
+                    # types
                     input0 = CodecVideo.dir_name + "v_VP8_1280x720.webm"
                     input1 = CodecVideo.dir_name + "v_VP9_1280x720.webm"
                     input2 = CodecVideo.dir_name + "v_h265_1280x720.mp4"
@@ -92,26 +95,44 @@ if __name__ == '__main__':
                     stacktype = ["vstack", "hstack"]
                     if user_stack_type == 1:
                         os.system(
-                            "ffmpeg -i "+input0+" -i "+input1+" -filter_complex "
+                            "ffmpeg -i "+input0+" -i "+input3+" -filter_complex "
                             ""+stacktype[0]+"=inputs=2 output_stack_vertical.mp4")
                     elif user_stack_type == 2:
                         os.system(
-                            "ffmpeg -i " + input0 + " -i " + input1 + " -filter_complex "
+                            "ffmpeg -i " + input0 + " -i " + input3 + " -filter_complex "
                             ""+stacktype[1] + "=inputs=2 "
                                               "output_stack_horizontal.mp4")
                     elif user_stack_type == 3:
-                        os.system("ffmpeg -i "+input0+" -i "+input1+" "
+                        os.system("ffmpeg -i "+input0+" -i "+input3+" "
                                   "-filter_complex blend=all_mode=difference " 
                         "-c:v libx264 -crf 18 -c:a copy output_blend_diff.mkv")
                     elif user_stack_type == 0:
                         break
             if option == 3:
-                os.system("ffmpeg -i "+input_v+" -v 0 -vcodec mpeg4 -f mpegts "
-                                       "udp://127.0.0.1:23000")
-                # Where the[output-stream-URI] is locahost:port
-                # Since the IP address 127.0. 0.1 is called a loopback address,
-                # and it refers to local equipment, therefore is exactly the one
-                # we are looking for.
+                while True:
+                    menu_op = """
+                        Menu:
+                        1) TCP
+                        2) UDP
+                        0) Exit
+                                        """
+                    print(bcolors.MENU + bcolors.BOLD +
+                          menu_op + bcolors.ENDC)
+                    protocol_type = int(input("Enter the type of protocol you "
+                                           "want: "))
+                    if protocol_type == 1:
+
+                        os.system("ffmpeg -re -i "+input_v+" -f mpegts tcp://127.0.0.1:2000\?listen")
+                    elif protocol_type == 2:
+
+                        os.system("ffmpeg -i "+input_v+" -v 0 -vcodec mpeg4 -f mpegts "
+                                           "udp://127.0.0.1:23000")
+                    # Where the[output-stream-URI] is locahost:port
+                    # Since the IP address 127.0. 0.1 is called a loopback address,
+                    # and it refers to local equipment, therefore is exactly the one
+                    # we are looking for.
+                    elif protocol_type == 0:
+                        break
 
             if option == 4:
 
